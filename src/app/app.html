@@ -236,6 +236,7 @@
     <div class="right-side">
       <div class="pill-group">
         @for (item of [
+          { title: 'Product Dashboard', link: '/dashboard', isInternal: true },
           { title: 'Explore the Docs', link: 'https://angular.dev' },
           { title: 'Learn with Tutorials', link: 'https://angular.dev/tutorials' },
           { title: 'Prompt and best practices for AI', link: 'https://angular.dev/ai/develop-with-ai'},
@@ -246,8 +247,8 @@
           <a
             class="pill"
             [href]="item.link"
-            target="_blank"
-            rel="noopener"
+            [target]="item.isInternal ? '_self' : '_blank'"
+            [rel]="item.isInternal ? null : 'noopener'"
           >
             <span>{{ item.title }}</span>
             <svg

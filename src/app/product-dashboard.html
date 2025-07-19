@@ -1,0 +1,205 @@
+<div class="dashboard-container">
+  <!-- Header Tabs -->
+  <div class="header-tabs">
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'published'"
+      (click)="setActiveTab('published')">
+      Published
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'draft'"
+      (click)="setActiveTab('draft')">
+      Draft
+    </button>
+    <button class="export-button" (click)="exportProducts()">
+      Export Now
+    </button>
+  </div>
+
+  <!-- Products Table -->
+  <div class="table-container">
+    <table class="products-table">
+      <thead>
+        <tr>
+          <th class="checkbox-col">
+            <input type="checkbox" class="checkbox">
+          </th>
+          <th class="product-name-col">PRODUCT NAME</th>
+          <th class="first-stock-col">FIRST STOCK</th>
+          <th class="sold-col">SOLD</th>
+          <th class="date-col">DATE ADDED</th>
+          <th class="pricing-col">PRICING</th>
+          <th class="rating-col">RATING</th>
+          <th class="action-col">ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of displayedProducts" class="product-row">
+          <td class="checkbox-cell">
+            <input 
+              type="checkbox" 
+              class="checkbox"
+              [checked]="product.isSelected"
+              (change)="toggleProductSelection(product.id)">
+          </td>
+          <td class="product-name-cell">
+            {{ product.productName }}
+          </td>
+          <td class="first-stock-cell">
+            <span class="stock-icon">📦</span>
+            {{ product.firstStock | number }}
+          </td>
+          <td class="sold-cell">
+            <span class="arrow-icon">→</span>
+            <span class="sold-icon">💰</span>
+            {{ product.sold | number }}
+          </td>
+          <td class="date-cell">
+            {{ product.dateAdded }}
+          </td>
+          <td class="pricing-cell">
+            ${{ product.pricing | number }}
+          </td>
+          <td class="rating-cell">
+            <span class="star-icon">⭐</span>
+            {{ product.rating }}
+          </td>
+          <td class="action-cell">
+            <button class="action-button edit-button" (click)="editProduct(product.id)">
+              ✏️
+            </button>
+            <button class="action-button delete-button" (click)="deleteProduct(product.id)">
+              🗑️
+            </button>
+            <button class="action-button menu-button">
+              ⋯
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mobile Card View -->
+  <div class="mobile-card-container">
+    <div *ngFor="let product of displayedProducts" class="mobile-card">
+      <div class="mobile-card-header">
+        <div class="mobile-card-title">{{ product.productName }}</div>
+        <div class="mobile-card-checkbox">
+          <input 
+            type="checkbox" 
+            class="checkbox"
+            [checked]="product.isSelected"
+            (change)="toggleProductSelection(product.id)">
+        </div>
+      </div>
+      
+      <div class="mobile-card-details">
+        <div class="mobile-card-detail">
+          <div class="mobile-card-label">First Stock</div>
+          <div class="mobile-card-value">
+            <span class="stock-icon">📦</span>
+            {{ product.firstStock | number }}
+          </div>
+        </div>
+        
+        <div class="mobile-card-detail">
+          <div class="mobile-card-label">Sold</div>
+          <div class="mobile-card-value">
+            <span class="sold-icon">💰</span>
+            {{ product.sold | number }}
+          </div>
+        </div>
+        
+        <div class="mobile-card-detail">
+          <div class="mobile-card-label">Pricing</div>
+          <div class="mobile-card-value">${{ product.pricing | number }}</div>
+        </div>
+        
+        <div class="mobile-card-detail">
+          <div class="mobile-card-label">Rating</div>
+          <div class="mobile-card-value">
+            <span class="star-icon">⭐</span>
+            {{ product.rating }}
+          </div>
+        </div>
+      </div>
+      
+      <div class="mobile-card-actions">
+        <div class="mobile-card-date">{{ product.dateAdded }}</div>
+        <div class="mobile-card-buttons">
+          <button class="action-button edit-button" (click)="editProduct(product.id)">
+            ✏️
+          </button>
+          <button class="action-button delete-button" (click)="deleteProduct(product.id)">
+            🗑️
+          </button>
+          <button class="action-button menu-button">
+            ⋯
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-container">
+    <div class="pagination-controls">
+      <button 
+        class="pagination-button" 
+        (click)="previousPage()"
+        [disabled]="currentPage === 1">
+        Prev
+      </button>
+      
+      <button 
+        class="pagination-number" 
+        [class.active]="currentPage === 1"
+        (click)="goToPage(1)">
+        1
+      </button>
+      
+      <button 
+        class="pagination-number" 
+        [class.active]="currentPage === 2"
+        (click)="goToPage(2)">
+        2
+      </button>
+      
+      <span class="pagination-ellipsis">...</span>
+      
+      <button 
+        class="pagination-number" 
+        [class.active]="currentPage === 8"
+        (click)="goToPage(8)">
+        8
+      </button>
+      
+      <button 
+        class="pagination-number" 
+        [class.active]="currentPage === 9"
+        (click)="goToPage(9)">
+        9
+      </button>
+      
+      <button 
+        class="pagination-button" 
+        (click)="nextPage()">
+        Next
+      </button>
+    </div>
+    
+    <div class="pagination-info">
+      <span>Showing</span>
+      <select class="items-per-page-select">
+        <option value="7">7</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+      <span>of {{ totalItems }} entries</span>
+    </div>
+  </div>
+</div>
